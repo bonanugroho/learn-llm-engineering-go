@@ -1,0 +1,25 @@
+{
+    "llm" : {
+    "settings": {
+      "openai": {
+        "key": "xxx",
+        "url": "https://api.xxx.com/",
+        "model": "gpt-4o"
+      },
+      "ollama": {
+        "key": "xx",
+        "url": "xxx",
+        "model": "llama3.2"
+      },
+      "deepseek": {
+        "key": "xxx",
+        "url": "xxx",
+        "model": "deepseek-reasoner"
+      }
+    },
+    "message": {
+      "system_role": "You are an assistant that analyzes the contents of a website and provides a short summary, ignoring text that might be navigation related. Respond in markdown.",
+      "user_role": ""
+    }
+  }
+}
