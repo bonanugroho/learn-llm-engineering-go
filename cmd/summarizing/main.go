@@ -3,12 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/gocolly/colly"
 	"github.com/spf13/viper"
 
 	settings "github.com/bonanugroho/learn-llm-engineering-go/model"
-	summarizer "github.com/bonanugroho/learn-llm-engineering-go/model/summarizer"
-	"github.com/bonanugroho/learn-llm-engineering-go/reader/web_scraper"
+	ws "github.com/bonanugroho/learn-llm-engineering-go/reader/web_scraper"
 )
 
 var Settings = new(settings.Settings)
@@ -31,18 +29,7 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Summarizing!")
-
-	fmt.Printf("%v\n", Settings)
-
-	c := colly.NewCollector()
-	tempSummarizer := summarizer.Summarizer{
-		Title: "",
-		Text:  "",
-		Links: make([]summarizer.Link, 0),
-	}
-
-	reader := web_scraper.NewWebSummarizerImpl(c, &tempSummarizer)
+	reader := ws.NewWebSummarizerImpl()
 	res, err := reader.Read(Url)
 
 	if err != nil {

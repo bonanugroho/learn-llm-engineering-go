@@ -2,6 +2,7 @@ package web_scraper
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gocolly/colly"
 
@@ -13,8 +14,24 @@ type WebSummarizerImpl struct {
 	summarizer *model.Summarizer
 }
 
-func NewWebSummarizerImpl(colly *colly.Collector, summarizer *model.Summarizer) *WebSummarizerImpl {
-	return &WebSummarizerImpl{colly: colly, summarizer: summarizer}
+func NewWebSummarizerImpl() *WebSummarizerImpl {
+	c := colly.NewCollector()
+	s := model.Summarizer{
+		Title: "",
+		Text:  "",
+		Links: make([]model.Link, 0),
+	}
+	return &WebSummarizerImpl{
+		colly:      c,
+		summarizer: &s,
+	}
+}
+
+func (impl *WebSummarizerImpl) timer() func() {
+	start := time.Now()
+	return func() {
+		fmt.Printf("Scraping took: %s\n", time.Since(start))
+	}
 }
 
 func (impl *WebSummarizerImpl) Read(location string) (any, error) {
@@ -42,6 +59,8 @@ func (impl *WebSummarizerImpl) Read(location string) (any, error) {
 		impl.summarizer.Links = append(impl.summarizer.Links, link)
 	})
 
+	defer impl.timer()
+	
 	if err := impl.colly.Visit(location); err != nil {
 		return nil, err
 	}
